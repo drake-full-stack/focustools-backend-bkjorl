@@ -34,17 +34,14 @@ app.get("/", (req, res) => {
 //POST /api/tasks
 app.post("/api/tasks", async (req, res) => {
   try {
-    // Create new task from request body
     const newTask = new Task(req.body);
-
-    // Save to database
     const savedTask = await newTask.save();
-
-    // Send back the saved task
-    res.status(201).json(savedTask);
+    res.status(201).json({
+      message: "Task Created successfully",
+      task: savedTask,
+    });
   } catch (error) {
-    // Handle validation errors
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ message: "Validation error (missing required fields)" });
   }
 });
 
@@ -52,9 +49,12 @@ app.post("/api/tasks", async (req, res) => {
 app.get("/api/tasks", async (req, res) => {
   try {
     const tasks = await Task.find();
-    res.json(tasks);
+    res.json({
+      message: "Success",
+      tasks,
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
@@ -68,9 +68,14 @@ app.get("/api/tasks/:id", async (req, res) => {
         message: "Task not found",
       });
     }
-    res.json(task);
+
+    res.json({
+      message: "Task Found",
+      task,
+    });
+
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
@@ -93,9 +98,13 @@ app.put("/api/tasks/:id", async (req, res) => {
       });
     }
 
-    res.json(updatedTask);
+    res.json({
+      message: "Task updated",
+      updatedTask,
+    });
+
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ message: "Validation Error" });
   }
 });
 
@@ -111,11 +120,11 @@ app.delete("/api/tasks/:id", async (req, res) => {
     }
 
     res.json({
-      message: "Task deleted successfully",
+      message: "Task deleted",
       task: deletedTask,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -124,17 +133,15 @@ app.delete("/api/tasks/:id", async (req, res) => {
 // POST /api/sessions
 app.post("/api/sessions", async (req, res) => {
   try {
-    // Create new task from request body
     const newSession = new Session(req.body);
-
-    // Save to database
     const savedSession = await newSession.save();
 
-    // Send back the saved task
-    res.status(201).json(savedSession);
+    res.status(201).json({
+      message: "Session logged",
+      savedSession,
+    });
   } catch (error) {
-    // Handle validation errors
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ message: "Validation error" });
   }
 });
 
@@ -142,9 +149,11 @@ app.post("/api/sessions", async (req, res) => {
 app.get("/api/sessions", async (req, res) => {
   try {
     const session = await Session.find().populate('taskId');
-    res.json(session);
+    res.json({
+      message: "Success",
+      session});
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
