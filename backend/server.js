@@ -36,10 +36,7 @@ app.post("/api/tasks", async (req, res) => {
   try {
     const newTask = new Task(req.body);
     const savedTask = await newTask.save();
-    res.status(201).json({
-      message: "Task Created successfully",
-      task: savedTask,
-    });
+    res.json(savedTask);
   } catch (error) {
     res.status(400).json({ message: "Validation error (missing required fields)" });
   }
@@ -49,10 +46,7 @@ app.post("/api/tasks", async (req, res) => {
 app.get("/api/tasks", async (req, res) => {
   try {
     const tasks = await Task.find();
-    res.json({
-      message: "Success",
-      tasks,
-    });
+    res.json(tasks);
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
@@ -69,10 +63,7 @@ app.get("/api/tasks/:id", async (req, res) => {
       });
     }
 
-    res.json({
-      message: "Task Found",
-      task,
-    });
+    res.json(task);
 
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
@@ -99,10 +90,7 @@ app.put("/api/tasks/:id", async (req, res) => {
       });
     }
 
-    res.json({
-      message: "Task updated",
-      updatedTask,
-    });
+    res.json(updatedTask);
 
   } catch (error) {
     res.status(400).json({ message: "Validation Error" });
@@ -120,10 +108,7 @@ app.delete("/api/tasks/:id", async (req, res) => {
       });
     }
 
-    res.json({
-      message: "Task deleted",
-      task: deletedTask,
-    });
+    res.json(deletedTask);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -137,10 +122,7 @@ app.post("/api/sessions", async (req, res) => {
     const newSession = new Session(req.body);
     const savedSession = await newSession.save();
 
-    res.status(201).json({
-      message: "Session logged",
-      savedSession,
-    });
+    res.status(201).json(savedSession);
   } catch (error) {
     res.status(400).json({ message: "Validation error" });
   }
@@ -150,9 +132,7 @@ app.post("/api/sessions", async (req, res) => {
 app.get("/api/sessions", async (req, res) => {
   try {
     const session = await Session.find().populate('taskId');
-    res.json({
-      message: "Success",
-      session});
+    res.json(session);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
